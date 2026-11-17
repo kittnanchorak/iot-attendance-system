@@ -93,7 +93,8 @@ function requireAdmin(): void
 function login(string $username, string $password): array
 {
     $db = Database::connect();
-    $stmt = $db->prepare('SELECT * FROM users WHERE username = ? AND role IN ("admin", "teacher")');
+    // ใน PostgreSQL ค่า string ต้องใช้ Single Quote ('admin', 'teacher')
+    $stmt = $db->prepare("SELECT * FROM users WHERE username = ? AND role IN ('admin', 'teacher')");
     $stmt->execute([$username]);
     $user = $stmt->fetch();
 
@@ -119,8 +120,9 @@ function loginStudent(string $studentIdentifier, string $password): array
     
     // ค้นหานักศึกษาจาก student_code หรือ student_id_full
     $cleanId = trim($studentIdentifier);
-    $stmt = $db->prepare('SELECT * FROM students WHERE (student_code = ? OR student_id_full = ? OR REPLACE(student_id_full, " ", "") = ?) AND is_active = 1 LIMIT 1');
-    $stmt->execute([$cleanId, $cleanId, str_replace(' ', '', $cleanId)]);
+    $cleanIdNoSpace = str_replace(' ', '', $cleanId);
+    $stmt = $db->prepare("SELECT * FROM students WHERE (student_code = ? OR student_id_full = ? OR REPLACE(student_id_full, ' ', '') = ?) AND is_active = 1 LIMIT 1");
+    $stmt->execute([$cleanId, $cleanId, $cleanIdNoSpace]);
     $student = $stmt->fetch();
 
     if (!$student) {
@@ -128,12 +130,11 @@ function loginStudent(string $studentIdentifier, string $password): array
     }
 
     // ตรวจสอบว่ามีบัญชีใน users หรือไม่
-    $uStmt = $db->prepare('SELECT * FROM users WHERE student_id = ? OR username = ? LIMIT 1');
+    $uStmt = $db->prepare("SELECT * FROM users WHERE student_id = ? OR username = ? LIMIT 1");
     $uStmt->execute([$student['id'], $student['student_code']]);
     $user = $uStmt->fetch();
 
     if ($user) {
-        // มีบัญชีแล้ว ตรวจสอบรหัสผ่าน
         if (password_verify($password, $user['password'])) {
             $_SESSION['user_id']    = $user['id'];
             $_SESSION['username']   = $user['username'];
@@ -147,8 +148,6 @@ function loginStudent(string $studentIdentifier, string $password): array
             return ['success' => false, 'message' => 'รหัสผ่านไม่ถูกต้อง'];
         }
     } else {
-        // หากยังไม่มีบัญชีใน users: อนุญาตให้ login ครั้งแรกด้วย password = student_code หรือ student_id_full
-        // แล้วทำการสร้างบัญชีให้ทันที
         $validDefaults = [
             $student['student_code'],
             $student['student_id_full'],
@@ -159,7 +158,7 @@ function loginStudent(string $studentIdentifier, string $password): array
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
             $fullName = $student['title'] . $student['first_name'] . ' ' . $student['last_name'];
             
-            $insStmt = $db->prepare('INSERT INTO users (username, password, full_name, role, student_id) VALUES (?, ?, ?, "student", ?)');
+            $insStmt = $db->prepare("INSERT INTO users (username, password, full_name, role, student_id) VALUES (?, ?, ?, 'student', ?)");
             $insStmt->execute([$student['student_code'], $hashedPassword, $fullName, $student['id']]);
             $newUserId = (int)$db->lastInsertId();
 
@@ -212,7 +211,7 @@ function getSetting(string $key, string $default = ''): string
 
     try {
         $db = Database::connect();
-        $stmt = $db->prepare('SELECT setting_value FROM settings WHERE setting_key = ?');
+        $stmt = $db->prepare("SELECT setting_value FROM settings WHERE setting_key = ?");
         $stmt->execute([$key]);
         $row = $stmt->fetch();
         $cache[$key] = $row ? $row['setting_value'] : $default;
@@ -232,7 +231,7 @@ function getSystemSetting(string $key, string $default = ''): string
 
     try {
         $db = Database::connect();
-        $stmt = $db->prepare('SELECT setting_value FROM system_settings WHERE setting_key = ?');
+        $stmt = $db->prepare("SELECT setting_value FROM system_settings WHERE setting_key = ?");
         $stmt->execute([$key]);
         $row = $stmt->fetch();
         $sysCache[$key] = $row ? $row['setting_value'] : $default;
