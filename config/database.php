@@ -5,18 +5,16 @@
  */
 
 // =====================================================
-// SUPABASE / POSTGRESQL & MYSQL CONFIGURATION
+// SUPABASE / POSTGRESQL (IPv4 Pooler for Render)
 // =====================================================
 
-// สามารถสลับโหมดได้ผ่าน Environment Variable หรือตั้งค่าด้านล่าง
-// ค่าเริ่มต้น: ใช้ 'pgsql' (Supabase Cloud) หรือ fallback เป็น 'mysql' (XAMPP เดิม)
 define('DB_DRIVER', getenv('DB_DRIVER') ?: 'pgsql');
 
-// Supabase Host จากโปรเจกต์ของคุณ
-define('DB_HOST', getenv('DB_HOST') ?: 'db.snbqtuflqiqsgfdjvlxh.supabase.co');
-define('DB_PORT', getenv('DB_PORT') ?: (DB_DRIVER === 'pgsql' ? '5432' : '3309'));
+// Supabase IPv4 Pooler Host
+define('DB_HOST', getenv('DB_HOST') ?: 'aws-1-ap-southeast-2.pooler.supabase.com');
+define('DB_PORT', getenv('DB_PORT') ?: '6543');
 define('DB_NAME', getenv('DB_NAME') ?: 'postgres');
-define('DB_USER', getenv('DB_USER') ?: 'postgres');
+define('DB_USER', getenv('DB_USER') ?: 'postgres.snbqtuflqiqsgfdjvlxh');
 define('DB_PASS', getenv('DB_PASS') ?: 'l;ylfu8iy[d[');
 
 date_default_timezone_set('Asia/Bangkok');
@@ -62,7 +60,6 @@ class Database
             } catch (PDOException $e) {
                 error_log('[DB Error] ' . $e->getMessage());
 
-                // ถ้าเชื่อม pgsql ไม่ได้ ให้แจ้งชัดเจน
                 http_response_code(500);
                 header('Content-Type: application/json; charset=utf-8');
                 die(json_encode([
