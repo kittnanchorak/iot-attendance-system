@@ -25,7 +25,7 @@ if ($action === 'list') {
     $params = [];
 
     if (!empty($search)) {
-        $where[] = '(s.first_name LIKE ? OR s.last_name LIKE ? OR s.student_code LIKE ? OR s.student_id_full LIKE ? OR r.request_no LIKE ?)';
+        $where[] = '(s.first_name ILIKE ? OR s.last_name ILIKE ? OR s.student_code ILIKE ? OR s.student_id_full ILIKE ? OR r.request_no ILIKE ?)';
         $searchWild = "%{$search}%";
         array_push($params, $searchWild, $searchWild, $searchWild, $searchWild, $searchWild);
     }
@@ -139,7 +139,6 @@ if ($action === 'decide') {
         exit;
     }
 
-    // ตรวจสอบว่ามีคำร้องนี้อยู่หรือไม่
     $chkStmt = $db->prepare('SELECT * FROM leave_requests WHERE id = ?');
     $chkStmt->execute([$requestId]);
     $leaveReq = $chkStmt->fetch();
@@ -152,18 +151,17 @@ if ($action === 'decide') {
     try {
         $db->beginTransaction();
 
-        // อัปเดตสถานะใน leave_requests
         $updStmt = $db->prepare('UPDATE leave_requests SET status = ?, updated_at = NOW() WHERE id = ?');
         $updStmt->execute([$decision, $requestId]);
 
-        // บันทึกหรืออัปเดตประวัติการพิจารณาใน leave_approvals
+        // PostgreSQL ON CONFLICT (leave_request_id)
         $appStmt = $db->prepare('
             INSERT INTO leave_approvals (leave_request_id, action_by, action, comment, action_at)
             VALUES (?, ?, ?, ?, NOW())
-            ON DUPLICATE KEY UPDATE 
-                action_by = VALUES(action_by),
-                action = VALUES(action),
-                comment = VALUES(comment),
+            ON CONFLICT (leave_request_id) DO UPDATE SET 
+                action_by = EXCLUDED.action_by,
+                action = EXCLUDED.action,
+                comment = EXCLUDED.comment,
                 action_at = NOW()
         ');
         $appStmt->execute([$requestId, $_SESSION['user_id'], $decision, $comment]);
