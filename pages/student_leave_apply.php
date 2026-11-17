@@ -76,7 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } elseif ($fileSizeBytes > ($maxFileSizeMb * 1024 * 1024)) {
                     $error = "ขนาดไฟล์ต้องไม่เกิน {$maxFileSizeMb} MB";
                 } else {
-                    // สร้างชื่อไฟล์ใหม่แบบสุ่ม ป้องกันการเขียนทับและการเดาชื่อ
                     $newFileName = 'leave_' . $studentId . '_' . time() . '_' . bin2hex(random_bytes(6)) . '.' . $ext;
                     $uploadDir = __DIR__ . '/../uploads/leave_documents/';
                     if (!is_dir($uploadDir)) {
@@ -102,14 +101,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $diff = (strtotime($endDate) - strtotime($startDate)) / (60 * 60 * 24) + 1;
                 $totalDays = max(1, (int)$diff);
 
-                // สร้างหมายเลขคำร้อง Request No. เช่น LEAVE-20261117-001
+                // สร้างหมายเลขคำร้อง Request No.
                 $requestNo = 'LV-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -5));
 
-                $insStmt = $db->prepare('
+                // ใน PostgreSQL ใช้ Single Quote 'pending' แทน "pending"
+                $insStmt = $db->prepare("
                     INSERT INTO leave_requests 
                     (request_no, student_id, leave_type, start_date, end_date, total_days, reason, status, created_at)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, "pending", NOW())
-                ');
+                    VALUES (?, ?, ?, ?, ?, ?, ?, 'pending', NOW())
+                ");
                 $insStmt->execute([
                     $requestNo,
                     $studentId,
@@ -390,7 +390,6 @@ require_once __DIR__ . '/../includes/student_header.php';
         return ('0' + d.getDate()).slice(-2) + '/' + ('0' + (d.getMonth() + 1)).slice(-2) + '/' + d.getFullYear();
     }
 
-    // Initialize
     handleTypeChange();
 </script>
 
