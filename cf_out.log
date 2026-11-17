@@ -1,0 +1,202 @@
+﻿npx : 2026-08-04T08:53:06Z INF Thank you for trying Cloudflare Tunnel. Doing so, without a Cloudflare account, is a 
+quick way to experiment and try it out. However, be aware that these account-less Tunnels have no uptime guarantee, 
+are subject to the Cloudflare Online Services Terms of Use (https://www.cloudflare.com/website-terms/), and Cloudflare 
+reserves the right to investigate your use of Tunnels for violations of such terms. If you intend to use Tunnels in 
+production you should use a pre-created named tunnel by following: 
+https://developers.cloudflare.com/cloudflare-one/connections/connect-apps
+At line:1 char:1
++ npx --yes cloudflared tunnel --url http://127.0.0.1:8000 2>&1 | Out-F ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (2026-08-04T08:5...ns/connect-apps:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+2026-08-04T08:53:06Z INF Requesting new quick Tunnel on trycloudflare.com...
+2026-08-04T08:53:12Z INF +--------------------------------------------------------------------------------------------+
+2026-08-04T08:53:12Z INF |  Your quick Tunnel has been created! Visit it at (it may take some time to be reachable):  |
+2026-08-04T08:53:12Z INF |  https://bottles-invitation-now-refers.trycloudflare.com                                   |
+2026-08-04T08:53:12Z INF +--------------------------------------------------------------------------------------------+
+2026-08-04T08:53:12Z INF Cannot determine default configuration path. No file [config.yml config.yaml] in 
+[~/.cloudflared ~/.cloudflare-warp ~/cloudflare-warp]
+2026-08-04T08:53:12Z INF Version 2026.7.3 (Checksum 8635da433b6df8194746e88ed9d2589566c20e38bfc2a80e431a348b7c765841)
+2026-08-04T08:53:12Z INF GOOS: windows, GOVersion: go1.26.4, GoArch: amd64
+2026-08-04T08:53:12Z INF Settings: map[ha-connections:1 protocol:quic url:http://127.0.0.1:8000]
+2026-08-04T08:53:12Z INF cloudflared will not automatically update on Windows systems.
+2026-08-04T08:53:12Z INF Generated Connector ID: 3b6c45b8-f509-41c8-a089-94b09be36ac0
+2026-08-04T08:53:12Z INF Initial protocol quic
+2026-08-04T08:53:12Z INF ICMP proxy will use 172.16.97.54 as source for IPv4
+2026-08-04T08:53:12Z INF ICMP proxy will use fe80::4716:8d87:d281:ca1 in zone Wi-Fi as source for IPv6
+2026-08-04T08:53:12Z INF cloudflared does not support loading the system root certificate pool on Windows. Please use 
+--origin-ca-pool <PATH> to specify the path to the certificate pool
+2026-08-04T08:53:12Z INF ICMP proxy will use 172.16.97.54 as source for IPv4
+2026-08-04T08:53:12Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 
+event=0 ip=198.41.200.113
+2026-08-04T08:53:12Z INF ICMP proxy will use fe80::4716:8d87:d281:ca1 in zone Wi-Fi as source for IPv6
+2026-08-04T08:53:12Z INF Starting metrics server on 127.0.0.1:20242/metrics
+2026-08-04T08:53:12Z INF +-------------------------------------------------------------------------------------+
+2026-08-04T08:53:12Z INF |                               CONNECTIVITY PRE-CHECKS                               |
+2026-08-04T08:53:12Z INF +-------------------------------------------------------------------------------------+
+2026-08-04T08:53:12Z INF |  COMPONENT         TARGET                     STATUS  DETAILS                       |
+2026-08-04T08:53:12Z INF |  DNS Resolution    region1.v2.argotunnel.com  PASS    DNS Resolved successfully     |
+2026-08-04T08:53:12Z INF |  DNS Resolution    region2.v2.argotunnel.com  PASS    DNS Resolved successfully     |
+2026-08-04T08:53:12Z INF |  UDP Connectivity  region1.v2.argotunnel.com  PASS    QUIC connection successful    |
+2026-08-04T08:53:12Z INF |  UDP Connectivity  region2.v2.argotunnel.com  PASS    QUIC connection successful    |
+2026-08-04T08:53:12Z INF |  TCP Connectivity  region1.v2.argotunnel.com  PASS    HTTP/2 connection successful  |
+2026-08-04T08:53:12Z INF |  TCP Connectivity  region2.v2.argotunnel.com  PASS    HTTP/2 connection successful  |
+2026-08-04T08:53:12Z INF |  Cloudflare API    api.cloudflare.com:443     PASS    API is reachable              |
+2026-08-04T08:53:12Z INF |                                                                                     |
+2026-08-04T08:53:12Z INF |  SUMMARY: Environment is healthy. cloudflared will use 'quic' as primary protocol.  |
+2026-08-04T08:53:12Z INF +-------------------------------------------------------------------------------------+
+2026-08-04T08:53:12Z INF precheck component="DNS Resolution" details="DNS Resolved successfully" 
+run_id=658116d8-efc0-4655-9ba9-5a0dc45c31b1 status=pass target=region1.v2.argotunnel.com
+2026-08-04T08:53:12Z INF precheck component="DNS Resolution" details="DNS Resolved successfully" 
+run_id=658116d8-efc0-4655-9ba9-5a0dc45c31b1 status=pass target=region2.v2.argotunnel.com
+2026-08-04T08:53:12Z INF precheck component="UDP Connectivity" details="QUIC connection successful" 
+run_id=658116d8-efc0-4655-9ba9-5a0dc45c31b1 status=pass target=region1.v2.argotunnel.com
+2026-08-04T08:53:12Z INF precheck component="UDP Connectivity" details="QUIC connection successful" 
+run_id=658116d8-efc0-4655-9ba9-5a0dc45c31b1 status=pass target=region2.v2.argotunnel.com
+2026-08-04T08:53:12Z INF precheck component="TCP Connectivity" details="HTTP/2 connection successful" 
+run_id=658116d8-efc0-4655-9ba9-5a0dc45c31b1 status=pass target=region1.v2.argotunnel.com
+2026-08-04T08:53:12Z INF precheck component="TCP Connectivity" details="HTTP/2 connection successful" 
+run_id=658116d8-efc0-4655-9ba9-5a0dc45c31b1 status=pass target=region2.v2.argotunnel.com
+2026-08-04T08:53:12Z INF precheck component="Cloudflare API" details="API is reachable" 
+run_id=658116d8-efc0-4655-9ba9-5a0dc45c31b1 status=pass target=api.cloudflare.com:443
+2026-08-04T08:53:12Z INF precheck complete hard_fail=false run_id=658116d8-efc0-4655-9ba9-5a0dc45c31b1 
+suggested_protocol=quic
+2026-08-04T08:53:13Z INF Registered tunnel connection connIndex=0 connection=7ffb1591-03a9-4083-8a9e-86d8c7e98de7 
+event=0 ip=198.41.200.113 location=sin15 protocol=quic
+2026-08-04T08:54:51Z ERR  error="Unable to reach the origin service. The service may be down or it may not be 
+responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because the 
+target machine actively refused it." connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:8000
+2026-08-04T08:54:51Z ERR Request failed error="Unable to reach the origin service. The service may be down or it may 
+not be responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because 
+the target machine actively refused it." connIndex=0 
+dest=https://bottles-invitation-now-refers.trycloudflare.com/robots.txt event=0 ip=198.41.200.113 type=http
+2026-08-04T08:54:53Z ERR  error="Unable to reach the origin service. The service may be down or it may not be 
+responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because the 
+target machine actively refused it." connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:8000
+2026-08-04T08:54:53Z ERR Request failed error="Unable to reach the origin service. The service may be down or it may 
+not be responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because 
+the target machine actively refused it." connIndex=0 dest=https://bottles-invitation-now-refers.trycloudflare.com/?fbcl
+id=IwcGRvZgRleHRuA2FlbQIxMQBzcnRjBmFwcF9pZAwyNTYyODEwNDA1NTgAAR6xrw6FNNCNYbJkdBXVEP8ZmXMnAjhkeJv0X0zWpZLLgn6epqqeCANf5A
+-eKw_aem_JIYLOaoyKvgHdwCPBIqvaw event=0 ip=198.41.200.113 type=http
+2026-08-04T08:54:53Z ERR  error="Unable to reach the origin service. The service may be down or it may not be 
+responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because the 
+target machine actively refused it." connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:8000
+2026-08-04T08:54:53Z ERR Request failed error="Unable to reach the origin service. The service may be down or it may 
+not be responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because 
+the target machine actively refused it." connIndex=0 dest=https://bottles-invitation-now-refers.trycloudflare.com/test_
+iot.php?fbclid=IwcGRvZgRleHRuA2FlbQIxMQBzcnRjBmFwcF9pZAwyNTYyODEwNDA1NTgAAR6v-DOBsDefM6V8zZYY8tDnE0gfz1TDhmuugFZFUw8Hsf
+RP-7WjgQnF0xbJJQ_aem_007XUGeTZxz1_9gPsGI4uQ event=0 ip=198.41.200.113 type=http
+2026-08-04T08:54:54Z ERR  error="Unable to reach the origin service. The service may be down or it may not be 
+responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because the 
+target machine actively refused it." connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:8000
+2026-08-04T08:54:54Z ERR Request failed error="Unable to reach the origin service. The service may be down or it may 
+not be responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because 
+the target machine actively refused it." connIndex=0 
+dest=https://bottles-invitation-now-refers.trycloudflare.com/favicon.ico event=0 ip=198.41.200.113 type=http
+2026-08-04T08:54:55Z ERR  error="Unable to reach the origin service. The service may be down or it may not be 
+responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because the 
+target machine actively refused it." connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:8000
+2026-08-04T08:54:55Z ERR Request failed error="Unable to reach the origin service. The service may be down or it may 
+not be responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because 
+the target machine actively refused it." connIndex=0 dest=https://bottles-invitation-now-refers.trycloudflare.com/ 
+event=0 ip=198.41.200.113 type=http
+2026-08-04T08:54:55Z ERR  error="Unable to reach the origin service. The service may be down or it may not be 
+responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because the 
+target machine actively refused it." connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:8000
+2026-08-04T08:54:55Z ERR Request failed error="Unable to reach the origin service. The service may be down or it may 
+not be responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because 
+the target machine actively refused it." connIndex=0 
+dest=https://bottles-invitation-now-refers.trycloudflare.com/favicon.ico event=0 ip=198.41.200.113 type=http
+2026-08-04T08:54:55Z ERR  error="Unable to reach the origin service. The service may be down or it may not be 
+responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because the 
+target machine actively refused it." connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:8000
+2026-08-04T08:54:55Z ERR Request failed error="Unable to reach the origin service. The service may be down or it may 
+not be responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because 
+the target machine actively refused it." connIndex=0 
+dest=https://bottles-invitation-now-refers.trycloudflare.com/favicon.ico event=0 ip=198.41.200.113 type=http
+2026-08-04T08:55:00Z ERR  error="Unable to reach the origin service. The service may be down or it may not be 
+responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because the 
+target machine actively refused it." connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:8000
+2026-08-04T08:55:00Z ERR Request failed error="Unable to reach the origin service. The service may be down or it may 
+not be responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because 
+the target machine actively refused it." connIndex=0 dest=https://bottles-invitation-now-refers.trycloudflare.com/ 
+event=0 ip=198.41.200.113 type=http
+2026-08-04T08:55:01Z ERR  error="Unable to reach the origin service. The service may be down or it may not be 
+responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because the 
+target machine actively refused it." connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:8000
+2026-08-04T08:55:01Z ERR Request failed error="Unable to reach the origin service. The service may be down or it may 
+not be responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because 
+the target machine actively refused it." connIndex=0 
+dest=https://bottles-invitation-now-refers.trycloudflare.com/favicon.ico event=0 ip=198.41.200.113 type=http
+2026-08-04T08:55:20Z ERR  error="Unable to reach the origin service. The service may be down or it may not be 
+responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because the 
+target machine actively refused it." connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:8000
+2026-08-04T08:55:20Z ERR Request failed error="Unable to reach the origin service. The service may be down or it may 
+not be responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because 
+the target machine actively refused it." connIndex=0 
+dest=https://bottles-invitation-now-refers.trycloudflare.com/test_iot.php event=0 ip=198.41.200.113 type=http
+2026-08-04T08:55:20Z ERR  error="Unable to reach the origin service. The service may be down or it may not be 
+responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because the 
+target machine actively refused it." connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:8000
+2026-08-04T08:55:20Z ERR Request failed error="Unable to reach the origin service. The service may be down or it may 
+not be responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because 
+the target machine actively refused it." connIndex=0 
+dest=https://bottles-invitation-now-refers.trycloudflare.com/favicon.ico event=0 ip=198.41.200.113 type=http
+2026-08-04T08:55:27Z ERR  error="Unable to reach the origin service. The service may be down or it may not be 
+responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because the 
+target machine actively refused it." connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:8000
+2026-08-04T08:55:27Z ERR Request failed error="Unable to reach the origin service. The service may be down or it may 
+not be responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because 
+the target machine actively refused it." connIndex=0 dest=https://bottles-invitation-now-refers.trycloudflare.com/?fbcl
+id=IwcGRvZgRleHRuA2FlbQIxMQBzcnRjBmFwcF9pZAwyNTYyODEwNDA1NTgAAR6xrw6FNNCNYbJkdBXVEP8ZmXMnAjhkeJv0X0zWpZLLgn6epqqeCANf5A
+-eKw_aem_JIYLOaoyKvgHdwCPBIqvaw event=0 ip=198.41.200.113 type=http
+2026-08-04T08:55:27Z ERR  error="Unable to reach the origin service. The service may be down or it may not be 
+responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because the 
+target machine actively refused it." connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:8000
+2026-08-04T08:55:27Z ERR Request failed error="Unable to reach the origin service. The service may be down or it may 
+not be responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because 
+the target machine actively refused it." connIndex=0 dest=https://bottles-invitation-now-refers.trycloudflare.com/test_
+iot.php?fbclid=IwcGRvZgRleHRuA2FlbQIxMQBzcnRjBmFwcF9pZAwyNTYyODEwNDA1NTgAAR6v-DOBsDefM6V8zZYY8tDnE0gfz1TDhmuugFZFUw8Hsf
+RP-7WjgQnF0xbJJQ_aem_007XUGeTZxz1_9gPsGI4uQ event=0 ip=198.41.200.113 type=http
+2026-08-04T08:56:38Z ERR  error="Unable to reach the origin service. The service may be down or it may not be 
+responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because the 
+target machine actively refused it." connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:8000
+2026-08-04T08:56:38Z ERR Request failed error="Unable to reach the origin service. The service may be down or it may 
+not be responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because 
+the target machine actively refused it." connIndex=0 dest=https://bottles-invitation-now-refers.trycloudflare.com/ 
+event=0 ip=198.41.200.113 type=http
+2026-08-04T08:56:38Z ERR  error="Unable to reach the origin service. The service may be down or it may not be 
+responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because the 
+target machine actively refused it." connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:8000
+2026-08-04T08:56:38Z ERR Request failed error="Unable to reach the origin service. The service may be down or it may 
+not be responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because 
+the target machine actively refused it." connIndex=0 
+dest=https://bottles-invitation-now-refers.trycloudflare.com/favicon.ico event=0 ip=198.41.200.113 type=http
+2026-08-04T09:00:17Z ERR  error="Unable to reach the origin service. The service may be down or it may not be 
+responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because the 
+target machine actively refused it." connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:8000
+2026-08-04T09:00:17Z ERR Request failed error="Unable to reach the origin service. The service may be down or it may 
+not be responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because 
+the target machine actively refused it." connIndex=0 dest=https://bottles-invitation-now-refers.trycloudflare.com/ 
+event=0 ip=198.41.200.113 type=http
+2026-08-04T09:00:18Z ERR  error="Unable to reach the origin service. The service may be down or it may not be 
+responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because the 
+target machine actively refused it." connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:8000
+2026-08-04T09:00:18Z ERR Request failed error="Unable to reach the origin service. The service may be down or it may 
+not be responding to traffic from cloudflared: dial tcp 127.0.0.1:8000: connectex: No connection could be made because 
+the target machine actively refused it." connIndex=0 
+dest=https://bottles-invitation-now-refers.trycloudflare.com/favicon.ico event=0 ip=198.41.200.113 type=http
+2026-08-04T09:05:16Z ERR  error="Incoming request ended abruptly: context canceled" connIndex=0 event=1 ingressRule=0 
+originService=http://127.0.0.1:8000
+2026-08-04T09:05:16Z ERR Request failed error="Incoming request ended abruptly: context canceled" connIndex=0 
+dest=https://bottles-invitation-now-refers.trycloudflare.com/pages/login.php event=0 ip=198.41.200.113 type=http
+2026-08-04T09:05:20Z ERR  error="Incoming request ended abruptly: context canceled" connIndex=0 event=1 ingressRule=0 
+originService=http://127.0.0.1:8000
+2026-08-04T09:05:20Z ERR Request failed error="Incoming request ended abruptly: context canceled" connIndex=0 
+dest=https://bottles-invitation-now-refers.trycloudflare.com/pages/login.php event=0 ip=198.41.200.113 type=http
+2026-08-04T09:05:22Z ERR  error="Incoming request ended abruptly: context canceled" connIndex=0 event=1 ingressRule=0 
+originService=http://127.0.0.1:8000
+2026-08-04T09:05:22Z ERR Request failed error="Incoming request ended abruptly: context canceled" connIndex=0 
+dest=https://bottles-invitation-now-refers.trycloudflare.com/pages/login.php event=0 ip=198.41.200.113 type=http
+2026-08-04T09:13:17Z ERR Failed to refresh DNS local resolver error="lookup region1.v2.argotunnel.com: i/o timeout"
