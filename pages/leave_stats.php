@@ -19,17 +19,17 @@ $typeStatsStmt = $db->query("
 ");
 $typeStats = $typeStatsStmt->fetchAll();
 
-// 2. สรุปรายเดือนของปีปัจจุบัน
-$currentYear = date('Y');
+// 2. สรุปรายเดือนของปีปัจจุบัน (ใช้ EXTRACT สำหรับ PostgreSQL / รองรับทั้งคู่)
+$currentYear = (int)date('Y');
 $monthlyStmt = $db->prepare("
     SELECT 
-        MONTH(start_date) as m,
+        CAST(EXTRACT(MONTH FROM start_date) AS INTEGER) as m,
         SUM(CASE WHEN leave_type = 'sick' THEN 1 ELSE 0 END) as sick_count,
         SUM(CASE WHEN leave_type = 'personal' THEN 1 ELSE 0 END) as personal_count,
         COUNT(*) as total_count
     FROM leave_requests
-    WHERE YEAR(start_date) = ? AND status = 'approved'
-    GROUP BY MONTH(start_date)
+    WHERE CAST(EXTRACT(YEAR FROM start_date) AS INTEGER) = ? AND status = 'approved'
+    GROUP BY EXTRACT(MONTH FROM start_date)
     ORDER BY m ASC
 ");
 $monthlyStmt->execute([$currentYear]);
@@ -70,7 +70,7 @@ $topStudentsStmt = $db->query("
     FROM leave_requests r
     JOIN students s ON r.student_id = s.id
     WHERE r.status = 'approved'
-    GROUP BY s.id
+    GROUP BY s.id, s.student_code, s.student_id_full, s.title, s.first_name, s.last_name, s.room
     ORDER BY total_days DESC
     LIMIT 10
 ");
