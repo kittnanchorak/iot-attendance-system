@@ -199,7 +199,6 @@ require_once __DIR__ . '/../includes/sidebar.php';
                 <div class="mb-4">
                     <label class="form-label text-muted small mb-1">เอกสารประกอบการลา (ใบรับรองแพทย์/หลักฐาน)</label>
                     <div id="mAttachmentBox" class="p-3 rounded d-flex align-items-center justify-content-between" style="background: var(--bg-root); border: 1px solid var(--border);">
-                        <!-- Filled by JS -->
                     </div>
                 </div>
 
@@ -218,11 +217,11 @@ require_once __DIR__ . '/../includes/sidebar.php';
                     </div>
 
                     <div class="d-flex justify-content-end gap-2 pt-2">
-                        <button type="button" class="btn btn-outline-danger d-flex align-items-center gap-2 px-3" onclick="submitDecision('rejected')">
+                        <button type="button" class="btn btn-outline-danger d-flex align-items-center gap-2 px-3" onclick="triggerDecisionConfirm('rejected')">
                             <i data-lucide="x-circle" style="width: 16px; height: 16px;"></i>
                             <span>ไม่อนุมัติคำร้อง</span>
                         </button>
-                        <button type="button" class="btn btn-success d-flex align-items-center gap-2 px-4" onclick="submitDecision('approved')">
+                        <button type="button" class="btn btn-success d-flex align-items-center gap-2 px-4" onclick="triggerDecisionConfirm('approved')">
                             <i data-lucide="check-circle" style="width: 16px; height: 16px;"></i>
                             <span>อนุมัติคำร้อง</span>
                         </button>
@@ -244,13 +243,55 @@ require_once __DIR__ . '/../includes/sidebar.php';
     </div>
 </div>
 
+<!-- ✨ Popup Modal ยืนยันการอนุมัติ / ไม่อนุมัติแบบ Modern (Custom Confirmation Dialog) -->
+<div class="modal fade" id="confirmDecisionModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
+        <div class="modal-content shadow-lg border-0" style="background: #1e293b; color: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
+            <div class="p-4 text-center">
+                <div id="confirmIconWrapper" style="width: 68px; height: 68px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 18px;">
+                    <!-- Filled by JS -->
+                </div>
+                <h4 class="fw-bold mb-2 text-white" id="confirmTitle">ยืนยันการทำรายการ</h4>
+                <p class="text-secondary small mb-4" id="confirmMessage">คุณต้องการดำเนินการนี้ใช่หรือไม่?</p>
+
+                <div class="p-3 rounded mb-4 text-start" id="confirmPreviewBox" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255,255,255,0.08); font-size: 0.88rem;">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="text-muted">คำร้อง:</span>
+                        <strong class="text-white" id="confirmReqNo">-</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="text-muted">นักศึกษา:</span>
+                        <span class="text-white" id="confirmStudentName">-</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted">การดำเนินการ:</span>
+                        <span class="fw-bold" id="confirmActionBadge">-</span>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-outline-secondary w-50 py-2 rounded-3" data-bs-dismiss="modal">
+                        ยกเลิก
+                    </button>
+                    <button type="button" class="btn w-50 py-2 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2" id="confirmSubmitBtn" onclick="executeFinalDecision()">
+                        <span>ยืนยัน</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     let searchTimeout = null;
     let actionModalInstance = null;
+    let confirmModalInstance = null;
     let allRequests = [];
+    let pendingDecision = { action: '', id: '', comment: '' };
 
     document.addEventListener('DOMContentLoaded', () => {
         actionModalInstance = new bootstrap.Modal(document.getElementById('actionModal'));
+        confirmModalInstance = new bootstrap.Modal(document.getElementById('confirmDecisionModal'));
         fetchLeaveRequests();
     });
 
@@ -427,20 +468,65 @@ require_once __DIR__ . '/../includes/sidebar.php';
         if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
-    async function submitDecision(decision) {
+    // ✨ เปิด Popup ยืนยันการตัดสินใจ (Custom Confirmation Popup)
+    function triggerDecisionConfirm(decision) {
         const id = document.getElementById('modalRequestId').value;
         const comment = document.getElementById('approvalComment').value.trim();
 
         if (decision === 'rejected' && !comment) {
             alert('กรุณาระบุเหตุผลกรณีไม่อนุมัติคำร้อง เพื่อให้นักเรียนทราบสาเหตุ');
+            document.getElementById('approvalComment').focus();
             return;
         }
 
-        const confirmText = decision === 'approved' 
-            ? 'ยืนยันการอนุมัติคำร้องขอลาหยุดนี้?' 
-            : 'ยืนยันการไม่อนุมัติคำร้องขอลาหยุดนี้?';
+        const item = allRequests.find(r => r.id == id);
+        if (!item) return;
 
-        if (!confirm(confirmText)) return;
+        pendingDecision = { id, action: decision, comment };
+
+        const iconWrapper = document.getElementById('confirmIconWrapper');
+        const submitBtn = document.getElementById('confirmSubmitBtn');
+        const titleElem = document.getElementById('confirmTitle');
+        const msgElem = document.getElementById('confirmMessage');
+        const badgeElem = document.getElementById('confirmActionBadge');
+
+        document.getElementById('confirmReqNo').innerText = item.request_no;
+        document.getElementById('confirmStudentName').innerText = item.student_name;
+
+        if (decision === 'approved') {
+            iconWrapper.style.background = 'rgba(52, 211, 153, 0.15)';
+            iconWrapper.style.color = '#34d399';
+            iconWrapper.innerHTML = '<i data-lucide="check-circle" style="width: 36px; height: 36px;"></i>';
+            titleElem.innerText = 'ยืนยันการอนุมัติคำร้อง?';
+            msgElem.innerText = 'เมื่ออนุมัติแล้ว สถานะของนักเรียนจะถูกปรับเป็น "อนุมัติ" และบันทึกประวัติทันที';
+            badgeElem.className = 'badge bg-success';
+            badgeElem.innerText = 'อนุมัติ (Approved)';
+            submitBtn.className = 'btn btn-success w-50 py-2 rounded-3 fw-bold';
+            submitBtn.innerHTML = '<i data-lucide="check" style="width: 16px; height: 16px;"></i> ยืนยันอนุมัติ';
+        } else {
+            iconWrapper.style.background = 'rgba(248, 113, 113, 0.15)';
+            iconWrapper.style.color = '#f87171';
+            iconWrapper.innerHTML = '<i data-lucide="alert-triangle" style="width: 36px; height: 36px;"></i>';
+            titleElem.innerText = 'ยืนยันการไม่อนุมัติคำร้อง?';
+            msgElem.innerText = 'นักเรียนจะได้รับการแจ้งเตือนผลการปฏิเสธพร้อมเหตุผลที่คุณระบุ';
+            badgeElem.className = 'badge bg-danger';
+            badgeElem.innerText = 'ไม่อนุมัติ (Rejected)';
+            submitBtn.className = 'btn btn-danger w-50 py-2 rounded-3 fw-bold';
+            submitBtn.innerHTML = '<i data-lucide="x" style="width: 16px; height: 16px;"></i> ยืนยันไม่อนุมัติ';
+        }
+
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        confirmModalInstance.show();
+    }
+
+    // ✨ รันคำสั่งส่งผลไปเซิร์ฟเวอร์เมื่อผู้ใช้กดยืนยันใน Popup
+    async function executeFinalDecision() {
+        const { id, action, comment } = pendingDecision;
+        const submitBtn = document.getElementById('confirmSubmitBtn');
+        const originalContent = submitBtn.innerHTML;
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> กำลังบันทึก...';
 
         try {
             const res = await fetch('../api/leave_requests_api.php?action=decide', {
@@ -448,19 +534,25 @@ require_once __DIR__ . '/../includes/sidebar.php';
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     leave_request_id: id,
-                    action: decision,
+                    action: action,
                     comment: comment
                 })
             });
             const data = await res.json();
 
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalContent;
+
             if (data.success) {
+                confirmModalInstance.hide();
                 actionModalInstance.hide();
                 fetchLeaveRequests();
             } else {
                 alert('เกิดข้อผิดพลาด: ' + data.message);
             }
         } catch (e) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalContent;
             console.error(e);
             alert('ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้');
         }
